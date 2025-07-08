@@ -207,7 +207,8 @@ public class GameManager : MonoBehaviour
         foreach (GameObject fire in playerFires) fire.SetActive(false);
         foreach (GameObject fire in enemyFires) fire.SetActive(true);
         playerShipText.text = playerShipCount.ToString();
-        topText.text = "Select a tile";
+        if (matchPlaying)
+            topText.text = "Select a tile";
         playerTurn = true;
         ColorAllTiles(1);
         if (enemyShipCount < 1) GameOver("YOU WIN!!");        
