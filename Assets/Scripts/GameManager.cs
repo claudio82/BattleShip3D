@@ -15,12 +15,13 @@ public class GameManager : MonoBehaviour
     private ShipScript shipScript;
     private List<int[]> enemyShips;
     private int shipIndex = 0;
-    public List<TileScript> allTileScripts;    
+    public List<TileScript> allTileScripts;
 
     [Header("HUD")]
     public Button nextBtn;
     public Button rotateBtn;
     public Button replayBtn;
+    public Button menuBtn;
     public Text topText;
     public Text playerShipText;
     public Text enemyShipText;
@@ -35,10 +36,10 @@ public class GameManager : MonoBehaviour
     private bool playerTurn = true;
     public bool matchPlaying = false;
     public bool playerHasShotMissile = false;
-    
+
     private List<GameObject> playerFires = new List<GameObject>();
     private List<GameObject> enemyFires = new List<GameObject>();
-    
+
     private int enemyShipCount = 5;
     private int playerShipCount = 5;
 
@@ -56,6 +57,7 @@ public class GameManager : MonoBehaviour
         nextBtn.onClick.AddListener(() => NextShipClicked());
         rotateBtn.onClick.AddListener(() => RotateClicked());
         replayBtn.onClick.AddListener(() => ReplayClicked());
+        menuBtn.onClick.AddListener(() => MenuClicked());
         enemyShips = enemyScript.PlaceEnemyShips();
         audioSource = GetComponent<AudioSource>();
         waterHitSnd = audioClipArray[0];
@@ -68,7 +70,8 @@ public class GameManager : MonoBehaviour
         if (!shipScript.OnGameBoard())
         {
             shipScript.FlashColor(Color.red);
-        } else
+        }
+        else
         {
             if (shipIndex <= ships.Length - 2)
             {
@@ -88,7 +91,7 @@ public class GameManager : MonoBehaviour
                 matchPlaying = true;
             }
         }
-        
+
     }
 
     public void TileClicked(GameObject tile)
@@ -99,7 +102,7 @@ public class GameManager : MonoBehaviour
             tilePos.y += 15;
             playerTurn = false;
             audioSource.PlayOneShot(missileShotSnd, 1.0f);
-            Instantiate(missilePrefab, tilePos, missilePrefab.transform.rotation);            
+            Instantiate(missilePrefab, tilePos, missilePrefab.transform.rotation);
             playerHasShotMissile = true;
         }
         else if (!setupComplete)
@@ -126,7 +129,7 @@ public class GameManager : MonoBehaviour
     {
         int tileNum = Int32.Parse(Regex.Match(tile.name, @"\d+").Value);
         int hitCount = 0;
-        foreach(int[] tileNumArray in enemyShips)
+        foreach (int[] tileNumArray in enemyShips)
         {
             if (tileNumArray.Contains(tileNum))
             {
@@ -161,9 +164,9 @@ public class GameManager : MonoBehaviour
                 }
                 break;
             }
-            
+
         }
-        if(hitCount == 0)
+        if (hitCount == 0)
         {
             tile.GetComponent<TileScript>().SetTileColor(1, new Color32(38, 57, 76, 255));
             tile.GetComponent<TileScript>().SwitchColors(1);
@@ -184,7 +187,7 @@ public class GameManager : MonoBehaviour
             playerShipText.text = playerShipCount.ToString();
             enemyScript.SunkPlayer();
         }
-       Invoke("EndEnemyTurn", 2.0f);
+        Invoke("EndEnemyTurn", 2.0f);
     }
 
     private void EndPlayerTurn()
@@ -209,7 +212,7 @@ public class GameManager : MonoBehaviour
             topText.text = "Select a tile";
         playerTurn = true;
         ColorAllTiles(1);
-        if (enemyShipCount < 1) GameOver("YOU WIN!!");        
+        if (enemyShipCount < 1) GameOver("YOU WIN!!");
     }
 
     private void ColorAllTiles(int colorIndex)
@@ -225,6 +228,7 @@ public class GameManager : MonoBehaviour
         topText.text = "Game Over: " + winner;
         matchPlaying = false;
         replayBtn.gameObject.SetActive(true);
+        menuBtn.gameObject.SetActive(true);
         playerTurn = false;
     }
 
@@ -233,5 +237,9 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
+    void MenuClicked()
+    {
+        SceneManager.LoadSceneAsync(0);
+    }
 
 }
