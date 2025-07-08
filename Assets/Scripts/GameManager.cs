@@ -95,8 +95,6 @@ public class GameManager : MonoBehaviour
     {
         if (setupComplete && playerTurn && matchPlaying)
         {
-            
-
             Vector3 tilePos = tile.transform.position;
             tilePos.y += 15;
             playerTurn = false;
