@@ -645,6 +645,11 @@ MonoBehaviour:
   woodDock: {fileID: 362705069}
   matchPlaying: 0
   playerHasShotMissile: 0
+  audioSource: {fileID: 55964459}
+  audioClipArray:
+  - {fileID: 8300000, guid: 54131b79faee89e4d851b100bb40b9c1, type: 3}
+  - {fileID: 8300000, guid: 1b02c601f6472b548b76d3a5973152e2, type: 3}
+  - {fileID: 8300000, guid: cf7a3542ce75e4b4fbb15ff25b0b7a0c, type: 3}
 --- !u!4 &55964458
 Transform:
   m_ObjectHideFlags: 0
@@ -672,7 +677,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: b073be8ee08f965458cf777d4e02e65b, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.4
+  m_Volume: 0.25
   m_Pitch: 1
   Loop: 1
   Mute: 0

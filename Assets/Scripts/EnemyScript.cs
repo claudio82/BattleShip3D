@@ -11,12 +11,15 @@ public class EnemyScript : MonoBehaviour
     private int guess;
     public GameObject enemyMissilePrefab;
     public GameManager gameManager;
+    private AudioClip missileShoot;
 
     private void Start()
     {
         potentialHits = new List<int>();
         currentHits = new List<int>();
         guessGrid = Enumerable.Repeat('o', 100).ToArray();
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        missileShoot = gameManager.audioClipArray[2];
     }
 
     public List<int[]> PlaceEnemyShips()
@@ -189,6 +192,7 @@ public class EnemyScript : MonoBehaviour
         guessGrid[guess] = 'm';
         Vector3 vec = tile.transform.position;
         vec.y += 15;
+        gameManager.audioSource.PlayOneShot(missileShoot, 1.0f);
         GameObject missile = Instantiate(enemyMissilePrefab, vec, enemyMissilePrefab.transform.rotation);
         missile.GetComponent<EnemyMissileScript>().SetTarget(guess);
         missile.GetComponent<EnemyMissileScript>().targetTileLocation = tile.transform.position;

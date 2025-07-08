@@ -42,6 +42,12 @@ public class GameManager : MonoBehaviour
     private int enemyShipCount = 5;
     private int playerShipCount = 5;
 
+    public AudioSource audioSource;
+    public AudioClip[] audioClipArray;
+    private AudioClip missileShotSnd;
+    private AudioClip shipHitSnd;
+    private AudioClip waterHitSnd;
+
 
     // Start is called before the first frame update
     void Start()
@@ -51,6 +57,10 @@ public class GameManager : MonoBehaviour
         rotateBtn.onClick.AddListener(() => RotateClicked());
         replayBtn.onClick.AddListener(() => ReplayClicked());
         enemyShips = enemyScript.PlaceEnemyShips();
+        audioSource = GetComponent<AudioSource>();
+        waterHitSnd = audioClipArray[0];
+        shipHitSnd = audioClipArray[1];
+        missileShotSnd = audioClipArray[2];
     }
 
     private void NextShipClicked()
@@ -71,6 +81,7 @@ public class GameManager : MonoBehaviour
                 rotateBtn.gameObject.SetActive(false);
                 nextBtn.gameObject.SetActive(false);
                 woodDock.SetActive(false);
+                audioSource.Play();
                 topText.text = "Guess an enemy tile.";
                 setupComplete = true;
                 for (int i = 0; i < ships.Length; i++) ships[i].SetActive(false);
@@ -89,7 +100,8 @@ public class GameManager : MonoBehaviour
             Vector3 tilePos = tile.transform.position;
             tilePos.y += 15;
             playerTurn = false;
-            Instantiate(missilePrefab, tilePos, missilePrefab.transform.rotation);
+            audioSource.PlayOneShot(missileShotSnd, 1.0f);
+            Instantiate(missilePrefab, tilePos, missilePrefab.transform.rotation);            
             playerHasShotMissile = true;
         }
         else if (!setupComplete)
@@ -140,12 +152,14 @@ public class GameManager : MonoBehaviour
                     enemyFires.Add(Instantiate(firePrefab, firePos, Quaternion.identity));
                     tile.GetComponent<TileScript>().SetTileColor(1, new Color32(68, 0, 0, 255));
                     tile.GetComponent<TileScript>().SwitchColors(1);
+                    audioSource.PlayOneShot(shipHitSnd, 1.0f);
                 }
                 else
                 {
                     topText.text = "HIT!!";
                     tile.GetComponent<TileScript>().SetTileColor(1, new Color32(255, 0, 0, 255));
                     tile.GetComponent<TileScript>().SwitchColors(1);
+                    audioSource.PlayOneShot(shipHitSnd, 1.0f);
                 }
                 break;
             }
@@ -155,6 +169,7 @@ public class GameManager : MonoBehaviour
         {
             tile.GetComponent<TileScript>().SetTileColor(1, new Color32(38, 57, 76, 255));
             tile.GetComponent<TileScript>().SwitchColors(1);
+            audioSource.PlayOneShot(waterHitSnd, 0.7f);
             topText.text = "Missed.";
         }
         Invoke("EndPlayerTurn", 1.0f);

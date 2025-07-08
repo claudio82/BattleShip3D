@@ -11,11 +11,14 @@ public class TileScript : MonoBehaviour
     private bool missileHit = false;
     Color32[] hitColor = new Color32[2];
 
+    private AudioClip waterHit;
+
     void Start()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         hitColor[0] = gameObject.GetComponent<MeshRenderer>().material.color;
         hitColor[1] = gameObject.GetComponent<MeshRenderer>().material.color;
+        waterHit = gameManager.audioClipArray[0];
     }
 
     void Update()
@@ -51,11 +54,6 @@ public class TileScript : MonoBehaviour
         {
             hitColor[0] = new Color32(38, 57, 76, 255);
             GetComponent<Renderer>().material.color = hitColor[0];
-            
-        }
-        else if (collision.gameObject.CompareTag("Ship"))
-        {
-
         }
     }
 
