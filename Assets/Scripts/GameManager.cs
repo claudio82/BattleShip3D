@@ -209,6 +209,7 @@ public class GameManager : MonoBehaviour
     void GameOver(string winner)
     {
         topText.text = "Game Over: " + winner;
+        matchPlaying = false;
         replayBtn.gameObject.SetActive(true);
         playerTurn = false;
     }
