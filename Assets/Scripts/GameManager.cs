@@ -199,7 +199,7 @@ public class GameManager : MonoBehaviour
         topText.text = "Enemy's turn";
         enemyScript.NPCTurn();
         ColorAllTiles(0);
-        if (playerShipCount < 1) GameOver("ENEMY WINs!!!");
+        if (playerShipCount < 1 && matchPlaying) GameOver("ENEMY WINs!!!");
     }
 
     public void EndEnemyTurn()
@@ -212,7 +212,7 @@ public class GameManager : MonoBehaviour
             topText.text = "Select a tile";
         playerTurn = true;
         ColorAllTiles(1);
-        if (enemyShipCount < 1) GameOver("YOU WIN!!");
+        if (enemyShipCount < 1 && matchPlaying) GameOver("YOU WIN!!");
     }
 
     private void ColorAllTiles(int colorIndex)
