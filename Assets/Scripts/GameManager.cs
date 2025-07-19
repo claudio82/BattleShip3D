@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     public EnemyScript enemyScript;
     private ShipScript shipScript;
     private List<int[]> enemyShips;
+    private List<int[]> enemyShipsCpy;
     private int shipIndex = 0;
     public List<TileScript> allTileScripts;
 
@@ -59,6 +60,19 @@ public class GameManager : MonoBehaviour
         replayBtn.onClick.AddListener(() => ReplayClicked());
         menuBtn.onClick.AddListener(() => MenuClicked());
         enemyShips = enemyScript.PlaceEnemyShips();
+        enemyShipsCpy = new List<int[]>(enemyShips.Count);
+        foreach (int[] s in enemyShips)
+        {
+            int[] elem = new int[s.Length];
+            for (int i = 0; i < s.Length; i++)
+            {
+                elem[i] = s[i];
+            }
+            enemyShipsCpy.Add(elem);
+        }
+
+        //ShowEnemyShips();
+
         audioSource = GetComponent<AudioSource>();
         waterHitSnd = audioClipArray[0];
         shipHitSnd = audioClipArray[1];
@@ -91,7 +105,6 @@ public class GameManager : MonoBehaviour
                 matchPlaying = true;
             }
         }
-
     }
 
     public void TileClicked(GameObject tile)
@@ -213,6 +226,8 @@ public class GameManager : MonoBehaviour
         playerTurn = true;
         ColorAllTiles(1);
         if (enemyShipCount < 1 && matchPlaying) GameOver("YOU WIN!!");
+        if (!matchPlaying)
+            ShowEnemyShips();
     }
 
     private void ColorAllTiles(int colorIndex)
@@ -230,6 +245,35 @@ public class GameManager : MonoBehaviour
         replayBtn.gameObject.SetActive(true);
         menuBtn.gameObject.SetActive(true);
         playerTurn = false;
+    }
+
+    private void ShowEnemyShips()
+    {
+        bool isHorizontal;
+        bool submarinePlaced = false;
+        int shipLen;
+        foreach (var ship in enemyShipsCpy)
+        {
+            isHorizontal = true;
+            //Debug.Log("-- ENEMY SHIP POS:");
+            //Debug.Log("LENGTH = " + ship.Length.ToString());
+            for (int i = 0; i < ship.Length; i++)
+            {
+                int loc = ship[i];
+                //Debug.Log("location[" + i + "] = " + loc);
+            }
+            if (ship[0] - ship[1] > 1)
+                isHorizontal = false;
+            if (ship.Length == 3 && submarinePlaced)
+                shipLen = 6;
+            else
+                shipLen = ship.Length;
+            allTileScripts.ElementAt(ship[0]-1).SetEnemyLoc(ship[0], shipLen, isHorizontal);
+            if (ship.Length == 3 && !submarinePlaced)
+            {
+                submarinePlaced = true;
+            }
+        }
     }
 
     void ReplayClicked()

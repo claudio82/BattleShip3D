@@ -13,6 +13,13 @@ public class TileScript : MonoBehaviour
 
     private AudioClip waterHit;
 
+    [Header("Objects")]
+    public GameObject carrierShipPrefab;
+    public GameObject battleShipPrefab;
+    public GameObject submarinePrefab;
+    public GameObject cruiserPrefab;
+    public GameObject destroyerPrefab;
+
     void Start()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
@@ -65,5 +72,85 @@ public class TileScript : MonoBehaviour
     public void SwitchColors(int colorIndex)
     {
         GetComponent<Renderer>().material.color = hitColor[colorIndex];
+    }
+
+    public void SetEnemyLoc(int tilePos, int shipLength, bool isHorizontal  /*Color32 color*/ )
+    {
+        Vector3 shipPos;
+        switch (shipLength)
+        {
+            case 6:
+                shipPos = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + 0.7f, gameObject.transform.position.z);
+                if (!isHorizontal)
+                {
+                    cruiserPrefab.transform.rotation = Quaternion.Euler(-90f, 180f, 180f);
+                    shipPos.z -= 2.25f;
+                }
+                else
+                {
+                    cruiserPrefab.transform.rotation = Quaternion.Euler(-90f, 180f, 270f);
+                    shipPos.x -= 2.25f;
+                }
+                Instantiate(cruiserPrefab, shipPos, cruiserPrefab.transform.rotation);
+                break;
+            case 3:
+                shipPos = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + 0.7f, gameObject.transform.position.z);
+                if (!isHorizontal)
+                {
+                    submarinePrefab.transform.rotation = Quaternion.Euler(-90f, 180f, 0);
+                    shipPos.z -= 2.85f;
+                }
+                else
+                {
+                    submarinePrefab.transform.rotation = Quaternion.Euler(-90f, 180f, 90f);
+                    shipPos.x -= 2.85f;
+                }
+                Instantiate(submarinePrefab, shipPos, submarinePrefab.transform.rotation);
+                break;
+            case 5:
+                shipPos = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + 0.7f, gameObject.transform.position.z);
+                if (!isHorizontal)
+                {
+                    carrierShipPrefab.transform.rotation = Quaternion.Euler(-90f, 180f, 0);
+                    shipPos.z -= 4.35f;
+                }
+                else
+                {
+                    carrierShipPrefab.transform.rotation = Quaternion.Euler(-90f, 180f, 90f);
+                    shipPos.x -= 4.35f;
+                }
+                Instantiate(carrierShipPrefab, shipPos, carrierShipPrefab.transform.rotation);
+                break;
+            case 4:
+                shipPos = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + 0.7f, gameObject.transform.position.z);
+                if (!isHorizontal)
+                {
+                    battleShipPrefab.transform.rotation = Quaternion.Euler(-90f, 180f, 0);
+                    shipPos.z -= 3.35f;
+                }
+                else
+                {
+                    battleShipPrefab.transform.rotation = Quaternion.Euler(-90f, 180f, 90f);
+                    shipPos.x -= 3.35f;
+                }
+                Instantiate(battleShipPrefab, shipPos, battleShipPrefab.transform.rotation);
+                break;
+            case 2:
+                shipPos = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + 0.5f, gameObject.transform.position.z);
+                if (!isHorizontal)
+                {
+                    destroyerPrefab.transform.rotation = Quaternion.Euler(-90f, 180f, 180f);
+                    shipPos.z -= 1.35f;
+                }
+                else
+                {
+                    destroyerPrefab.transform.rotation = Quaternion.Euler(-90f, 180f, 270f);
+                    shipPos.x -= 1.35f;
+                }
+                Instantiate(destroyerPrefab, shipPos, destroyerPrefab.transform.rotation);
+                break;
+            default:
+                break;
+        }
     }
 }
