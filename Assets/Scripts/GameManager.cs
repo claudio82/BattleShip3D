@@ -35,6 +35,7 @@ public class GameManager : MonoBehaviour
 
     private bool setupComplete = false;
     private bool playerTurn = true;
+    private bool enemyShipsShown = false;
     public bool matchPlaying = false;
     public bool playerHasShotMissile = false;
 
@@ -224,8 +225,11 @@ public class GameManager : MonoBehaviour
         playerTurn = true;
         ColorAllTiles(1);
         if (enemyShipCount < 1 && matchPlaying) GameOver("YOU WIN!!");
-        if (!matchPlaying)
+        if (!matchPlaying && !enemyShipsShown)
+        {
             ShowEnemyShips();
+            enemyShipsShown = true;
+        }
     }
 
     private void ColorAllTiles(int colorIndex)
