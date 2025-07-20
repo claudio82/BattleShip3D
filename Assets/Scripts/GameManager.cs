@@ -71,8 +71,6 @@ public class GameManager : MonoBehaviour
             enemyShipsCpy.Add(elem);
         }
 
-        //ShowEnemyShips();
-
         audioSource = GetComponent<AudioSource>();
         waterHitSnd = audioClipArray[0];
         shipHitSnd = audioClipArray[1];
